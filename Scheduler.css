@@ -1,0 +1,67 @@
+body {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+}
+
+#Sunday, #Monday, #Tuesday, #Wednesday, 
+#Thursday, #Friday, #Saturday {
+    width: 150px;
+    height: 715px;
+    margin: auto;
+    border-left: 1px solid black;
+    border-top: 1px solid black;
+    float: left;
+    position: relative;
+}
+
+#Saturday {
+    border-right: 1px solid black;
+}
+
+#day-header, #divider-day, #divider-night {
+    border-bottom: 1px solid black;
+}
+
+#time-col {
+    width: 40px;
+    height: 700px;
+    margin: auto;
+    float: left;
+}
+
+#divider-day, #divider-night, #time-value {
+    width: 100%;
+    height: 5vh;
+}
+
+#divider-day, #divider-night {
+    text-align:center;
+    position: relative;
+}
+
+#divider-day:before, #divider-night:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-top: 1px solid rgb(16,16,16);
+    width: 100%;
+    transform: translateY(-50%);
+}
+
+#time-value {
+    margin: 1px;
+}
+
+#time-night, #divider-night {
+    display:none;
+}
+
+#toolbar {
+    background-color: ghostwhite;
+    float: left;
+    width: 300px;
+    height: 715px;
+    border: 1px solid black;
+}
