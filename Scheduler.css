@@ -65,3 +65,29 @@ body {
     height: 715px;
     border: 1px solid black;
 }
+
+#prev-button {
+    float: left;
+}
+
+#next-button {
+    float: right;
+}
+
+#prev-button, #next-button {
+    margin: 5px;
+}
+
+#display-info {
+    width: 90%;
+    height: 25vh;
+    background-color: gray;
+    margin: 6vh 2vh;
+}
+
+#display-new {
+    width: 90%;
+    height: 55vh;
+    background-color: gray;
+    margin: 5vh 2vh;
+}

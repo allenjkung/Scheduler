@@ -1,4 +1,28 @@
 let daysOfWeek=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+function createNewElt(type,ID,action,...children) {
+    let element=document.createElement(type);
+    if(ID!="")
+        element.id=ID;
+    if(action)
+        Object.assign(element,action);
+    for(let child of children) {
+        if(typeof child!="string")
+            element.appendChild(child);
+        else
+            element.appendChild(document.createTextNode(child));
+    }
+    return element;
+}
+function createFormElt(type,formtype,ID,value) {
+    let element=document.createElement(type);
+    if(ID!="")
+        element.id=ID;
+    if(value)
+        element.value=value;
+    if(formtype)
+        element.type=formtype;
+    return element;
+}
 
 function fillMainTable() {
     let main_table=document.getElementById("main-table");
@@ -62,7 +86,73 @@ function populateWeekDays(mainTable) {
 function populateToolbar(mainTable) {
     let toolbar=document.createElement("div");
     toolbar.id="toolbar";
+    let prev_button=createNewElt("button","prev-button", {
+        onclick:()=>prevWeek()
+    }, "Prev");
+    let next_button=createNewElt("button","next-button", {
+        onclick:()=>nextWeek()
+    }, "Next");
+    let display=populateDisplay();
+    let new_display=populateNewDisplay();
+    let newButton=createNewElt("button","new-button", {
+        onclick:()=>addNewDisplay()
+    },"Add New Event");
+    toolbar.appendChild(prev_button);
+    toolbar.appendChild(next_button);
+    toolbar.appendChild(display);
+    toolbar.appendChild(newButton);
+    toolbar.appendChild(new_display);
     mainTable.appendChild(toolbar);
 }
+function populateDisplay() {
+    let exitButton=createNewElt("button","x-button", {
+        onclick:()=>exitElement()
+    },"X");
+    let editButton=createNewElt("button","edit-button", {
+        onclick:()=>editDisplay()
+    },"Edit");
+    let saveButton=createNewElt("button","save-button", {
+        onclick:()=>save()
+    },"Save");
+    let cancelButton=createNewElt("button","cancel-button", {
+        onclick:()=>cancelElement()
+    },"Cancel");
+    let display=createNewElt("div","display-info",null,exitButton,editButton,saveButton,cancelButton); //TODO: convert into form
+    return display
+}
+function populateNewDisplay() {
+    let exitButton=createNewElt("button","x-button", {
+        onclick:()=>exitElement()
+    },"X");
+    let form=createNewElt("form","event-form", { //TODO: add more soon
+        onclick:()=>newEvent()},
+        createFormElt("label",undefined,"event-title","Event Title"),
+        createFormElt("input","text","title-info","Enter Event Title"),
+        createFormElt("input","submit","save-button","Save"),
+        createFormElt("input","submit","cancel-button","Cancel")
+    );
+    let new_display=createNewElt("div","display-new",null,exitButton,form);
+    return new_display;
+}
+function exitElement() { //TODO: soon
 
+}
+function editDisplay() { //TODO: soon
+
+}
+function cancelElement() { //TODO: soon
+
+}
+function addNewDisplay() { //TODO: soon
+
+}
+function save() { //TODO: When JSON file is created
+
+}
+function prevWeek() { //TODO: When JSON file is created
+
+}
+function nextWeek() { //TODO: When JSON file is created
+
+}
 fillMainTable();
