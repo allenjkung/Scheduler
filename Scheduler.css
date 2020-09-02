@@ -59,6 +59,7 @@ body {
 }
 
 #toolbar {
+    position: relative;
     background-color: ghostwhite;
     float: left;
     width: 300px;
@@ -75,19 +76,173 @@ body {
 }
 
 #prev-button, #next-button {
-    margin: 5px;
+    margin: 5px 0px 0px 0px;
+}
+
+#main-display {
+    text-align: center;
+}
+
+#display-event {
+    /*display: none; for testing purposes*/
+    display: none;
+    width: 90%;
+    height: auto;
+    background-color: ghostwhite;
+    margin: 5vh 2vh 1vh 2vh;
+    border: 2px solid gray;
+    text-align: center;
+}
+
+#display-title, #display-date, #display-time, #display-info {
+    margin: 2px;
 }
 
 #display-info {
+    /*display: block; for testing purposes*/
+    display: none;
+    position: absolute;
     width: 90%;
-    height: 25vh;
-    background-color: gray;
-    margin: 6vh 2vh;
+    height: 42vh;
+    background-color: ghostwhite;
+    margin: 5vh 2vh 4vh 2vh;
+    border: 2px solid gray;
+    text-align: center;
+}
+
+#edit-button {
+    /*display: block; for testing purposes*/
+    display: none;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#form-info-old {
+    width: 90%;
+    height: 120px;
 }
 
 #display-new {
+    /*display: block; for testing purposes*/
+    display: none;
+    position: absolute;
     width: 90%;
-    height: 55vh;
-    background-color: gray;
-    margin: 5vh 2vh;
+    height: 42vh;
+    background-color: ghostwhite;
+    margin: 1vh 2vh;
+    border: 2px solid gray;
+    text-align: center;
+    bottom: 0;
+}
+
+#x-button {
+    float: right;
+    vertical-align: top;
+    background: ghostwhite;
+    border: none;
+    margin: 1px;
+}
+
+#new-button {
+    /*display: none; for testing purposes*/
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    bottom: 0;
+}
+
+#event-title {
+    display: block;
+    padding: 22px 0px 5px 0px;
+}
+
+#form-title {
+    display: block;
+    width: 90%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#date-wrapper {
+    display: block;
+    width: 90%;
+    height: 30px;
+    margin-left: 5%;
+    margin-top: 10px;
+}
+
+#event-date {
+    float: left;
+}
+
+#form-month {
+    float: left;
+    width: 25px;
+}
+
+#form-day {
+    float: left;
+    width: 25px;
+}
+
+#form-year {
+    float: left;
+    width: 30px;
+}
+
+#date-dash {
+    float: left;
+}
+
+#time-wrapper {
+    display: block;
+    width: 90%;
+    height: 30px;
+    margin-left: 5%;
+    margin-top: 5px;
+}
+
+#time-label {
+    float: left;
+}
+
+#time-from, #time-to {
+    float: left;
+    width: 35px;
+}
+
+#period-from {
+    float: left;
+    margin: 0px 5px 0px 0px;
+}
+
+#period-to {
+    float: left;
+}
+
+#event-info {
+    display: block;
+    margin: 0px 0px 5px 0px;
+}
+
+#form-info-new {
+    width: 90%;
+    height: 120px;
+}
+#save-button {
+    float: left;
+    margin: 1px 0px 0px 9px;
+}
+
+#reset-button {
+    float: right;
+    margin: 1px 9px 0px 0px;
 }

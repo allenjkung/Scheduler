@@ -23,6 +23,12 @@ function createFormElt(type,formtype,ID,value) {
         element.type=formtype;
     return element;
 }
+function createSelectElt(value,text) {
+    let element=document.createElement("option");
+    element.value=value;
+    element.appendChild(document.createTextNode(text));
+    return element;
+}
 
 function fillMainTable() {
     let main_table=document.getElementById("main-table");
@@ -92,47 +98,77 @@ function populateToolbar(mainTable) {
     let next_button=createNewElt("button","next-button", {
         onclick:()=>nextWeek()
     }, "Next");
+    let new_button=createNewElt("button","new-button", {
+            onclick:()=>addNewDisplay()
+    },"Add New Event");
     let display=populateDisplay();
     let new_display=populateNewDisplay();
-    let newButton=createNewElt("button","new-button", {
-        onclick:()=>addNewDisplay()
-    },"Add New Event");
     toolbar.appendChild(prev_button);
     toolbar.appendChild(next_button);
     toolbar.appendChild(display);
-    toolbar.appendChild(newButton);
+    toolbar.appendChild(new_button);
     toolbar.appendChild(new_display);
     mainTable.appendChild(toolbar);
 }
 function populateDisplay() {
-    let exitButton=createNewElt("button","x-button", {
-        onclick:()=>exitElement()
-    },"X");
-    let editButton=createNewElt("button","edit-button", {
-        onclick:()=>editDisplay()
-    },"Edit");
-    let saveButton=createNewElt("button","save-button", {
-        onclick:()=>save()
-    },"Save");
-    let cancelButton=createNewElt("button","cancel-button", {
-        onclick:()=>cancelElement()
-    },"Cancel");
-    let display=createNewElt("div","display-info",null,exitButton,editButton,saveButton,cancelButton); //TODO: convert into form
-    return display
+    let display=createNewElt("div","main-display",null,
+        populateEventInfo(),
+        createNewElt("button","edit-button", {
+            onclick:()=>editDisplay()
+        },"Edit"),
+        createNewElt("div","display-info",null,populateForm())
+    );
+    return display;
 }
 function populateNewDisplay() {
-    let exitButton=createNewElt("button","x-button", {
-        onclick:()=>exitElement()
-    },"X");
-    let form=createNewElt("form","event-form", { //TODO: add more soon
-        onclick:()=>newEvent()},
-        createFormElt("label",undefined,"event-title","Event Title"),
-        createFormElt("input","text","title-info","Enter Event Title"),
-        createFormElt("input","submit","save-button","Save"),
-        createFormElt("input","submit","cancel-button","Cancel")
-    );
-    let new_display=createNewElt("div","display-new",null,exitButton,form);
+    let new_display=createNewElt("div","display-new",null,populateForm());
     return new_display;
+}
+function populateEventInfo() {
+    let event_info=createNewElt("div","display-event",null,
+        createNewElt("div","display-title",null,"Event Title"),
+        createNewElt("div","display-date",null,"Date: mm-dd-yyyy"),
+        createNewElt("div","display-time",null,"Time: 6am-6pm"),
+        createNewElt("div","display info",null,"Here contains a sentence"),
+    );
+    return event_info;
+}
+function populateForm() {
+    let form=createNewElt("form","event-form", {
+        onclick:()=>newEvent()},
+        createNewElt("button","x-button", {
+            onclick:()=>exitElement()
+        },"X"),
+        createNewElt("label","event-title",null,"Event Title"),
+        createFormElt("input","text","form-title","Enter Event Title"),
+        createNewElt("div","date-wrapper",null,
+            createNewElt("label","event-date",null,"Month-Day-Year: "),
+            createFormElt("input","text","form-month","mm"),
+            createNewElt("div","date-dash",null,"-"),
+            createFormElt("input","text","form-day","dd"),
+            createNewElt("div","date-dash",null,"-"),
+            createFormElt("input","text","form-year","yyyy")
+        ),
+        createNewElt("div","time-wrapper",null,
+            createNewElt("label","time-label",null,"From"),
+            createFormElt("input","text","time-from","6:00"),
+            createNewElt("select","period-from",null,
+                createSelectElt("am","am"),
+                createSelectElt("pm","pm"),
+            ),
+            createNewElt("label","time-label",null,"To"),
+            createFormElt("input","text","time-to","6:00"),
+            createNewElt("select","period-to",null,
+                createSelectElt("am","am"),
+                createSelectElt("pm","pm"),
+            )
+        ),
+        createNewElt("label","event-info",null,"Event Description"),
+        createFormElt("input","text","form-info-new","To be added"),
+        createFormElt("input","submit","save-button","Save"),
+        createFormElt("input","reset","reset-button","Reset")
+    );
+    return form;
 }
 function exitElement() { //TODO: soon
 
@@ -140,13 +176,13 @@ function exitElement() { //TODO: soon
 function editDisplay() { //TODO: soon
 
 }
-function cancelElement() { //TODO: soon
-
-}
 function addNewDisplay() { //TODO: soon
 
 }
 function save() { //TODO: When JSON file is created
+
+}
+function newEvent() { //TODO: When JSON file is created
 
 }
 function prevWeek() { //TODO: When JSON file is created
