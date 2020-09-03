@@ -94,7 +94,7 @@ function updateTime() {
     let today=new Date();
     let cWeekday=today.getDay();
     let day=String(today.getDate());
-    let month=String(today.getMonth()+1); //January is 0!
+    let month=String(today.getMonth()+1);
     let year=today.getFullYear();
     let endOfMonth=new Date(year,month,0);
     let lastDay=endOfMonth.getDate();
