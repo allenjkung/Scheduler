@@ -39,6 +39,7 @@ function fillMainTable() {
     populateWeekDays(main_table);
     time_col.style.marginTop=document.getElementById("day-header").clientHeight/2+"px";
     populateToolbar(main_table);
+    updateTime();
     console.log(main_table);
 }
 let padding="0000";
@@ -89,6 +90,31 @@ function populateWeekDays(mainTable) {
         mainTable.appendChild(col);
     }
 } 
+function updateTime() {
+    let today=new Date();
+    let cWeekday=today.getDay();
+    let day=String(today.getDate());
+    let month=String(today.getMonth()+1); //January is 0!
+    let year=today.getFullYear();
+    let endOfMonth=new Date(year,month,0);
+    let lastDay=endOfMonth.getDate();
+    let daysOfWeek_header=document.querySelectorAll("#day-header");
+    for(let i=0;i<cWeekday;i++) {
+        if((day-(cWeekday-i))<=0) {
+            let nmonth=new Date(year,month-1,0);
+            daysOfWeek_header[i].innerHTML+=" "+((nmonth.getDate()+(day-(cWeekday-i)))+"/"+nmonth.getMonth());
+        }
+        else
+            daysOfWeek_header[i].innerHTML+=" "+((day-(cWeekday-i))+"/"+month);
+    }
+    for(let i=0;i<7-cWeekday;i++) {
+        if((Number(day)+i)>lastDay) {
+            let nmonth=new Date(year,month+1,1);
+            daysOfWeek_header[cWeekday+i].innerHTML+=" "+((nmonth.getDate()+(lastDay-Number(day)+i)));
+        }
+        daysOfWeek_header[cWeekday+i].innerHTML+=" "+(Number(day)+i+"/"+month);
+    }
+}
 function populateToolbar(mainTable) {
     let toolbar=document.createElement("div");
     toolbar.id="toolbar";
@@ -99,7 +125,10 @@ function populateToolbar(mainTable) {
         onclick:()=>nextWeek()
     }, "Next");
     let new_button=createNewElt("button","new-button", {
-            onclick:()=>addNewDisplay()
+            onclick:()=> {
+                document.querySelector("#new-button").style.display="none";
+                document.querySelector("#display-new").style.display="block";
+            }
     },"Add New Event");
     let display=populateDisplay();
     let new_display=populateNewDisplay();
@@ -114,7 +143,11 @@ function populateDisplay() {
     let display=createNewElt("div","main-display",null,
         populateEventInfo(),
         createNewElt("button","edit-button", {
-            onclick:()=>editDisplay()
+            onclick:()=> {
+                document.querySelector("#edit-button").style.display="none";
+                document.querySelector("#display-event").style.display="none";
+                document.querySelector("#display-info").style.display="block";
+            }
         },"Edit"),
         createNewElt("div","display-info",null,populateForm())
     );
@@ -126,6 +159,12 @@ function populateNewDisplay() {
 }
 function populateEventInfo() {
     let event_info=createNewElt("div","display-event",null,
+        createNewElt("button","x-button", {
+            onclick:()=> {
+                document.querySelector("#display-event").style.display="none";
+                document.querySelector("#edit-button").style.display="none";
+            }
+        },"X"),
         createNewElt("div","display-title",null,"Event Title"),
         createNewElt("div","display-date",null,"Date: mm-dd-yyyy"),
         createNewElt("div","display-time",null,"Time: 6am-6pm"),
@@ -134,50 +173,53 @@ function populateEventInfo() {
     return event_info;
 }
 function populateForm() {
-    let form=createNewElt("form","event-form", {
-        onclick:()=>newEvent()},
+    let form=createNewElt("div","form-div",null,
         createNewElt("button","x-button", {
-            onclick:()=>exitElement()
+            onclick:function(event) {
+                if(event.path[2].id==="display-new") {
+                    event.path[2].style.display="none";
+                    document.querySelector("#new-button").style.display="block";
+                }
+                if(event.path[2].id==="display-info") {
+                    event.path[2].style.display="none";
+                    document.querySelector("#display-event").style.display="block";
+                    document.querySelector("#edit-button").style.display="block";
+                }
+            }
         },"X"),
-        createNewElt("label","event-title",null,"Event Title"),
-        createFormElt("input","text","form-title","Enter Event Title"),
-        createNewElt("div","date-wrapper",null,
-            createNewElt("label","event-date",null,"Month-Day-Year: "),
-            createFormElt("input","text","form-month","mm"),
-            createNewElt("div","date-dash",null,"-"),
-            createFormElt("input","text","form-day","dd"),
-            createNewElt("div","date-dash",null,"-"),
-            createFormElt("input","text","form-year","yyyy")
-        ),
-        createNewElt("div","time-wrapper",null,
-            createNewElt("label","time-label",null,"From"),
-            createFormElt("input","text","time-from","6:00"),
-            createNewElt("select","period-from",null,
-                createSelectElt("am","am"),
-                createSelectElt("pm","pm"),
+        createNewElt("form","event-form", {
+            onclick:()=>newEvent()},
+            createNewElt("label","event-title",null,"Event Title"),
+            createFormElt("input","text","form-title","Enter Event Title"),
+            createNewElt("div","date-wrapper",null,
+                createNewElt("label","event-date",null,"Month-Day-Year: "),
+                createFormElt("input","text","form-month","mm"),
+                createNewElt("div","date-dash",null,"-"),
+                createFormElt("input","text","form-day","dd"),
+                createNewElt("div","date-dash",null,"-"),
+                createFormElt("input","text","form-year","yyyy")
             ),
-            createNewElt("label","time-label",null,"To"),
-            createFormElt("input","text","time-to","6:00"),
-            createNewElt("select","period-to",null,
-                createSelectElt("am","am"),
-                createSelectElt("pm","pm"),
-            )
-        ),
-        createNewElt("label","event-info",null,"Event Description"),
-        createFormElt("input","text","form-info-new","To be added"),
-        createFormElt("input","submit","save-button","Save"),
-        createFormElt("input","reset","reset-button","Reset")
+            createNewElt("div","time-wrapper",null,
+                createNewElt("label","time-label",null,"From"),
+                createFormElt("input","text","time-from","6:00"),
+                createNewElt("select","period-from",null,
+                    createSelectElt("am","am"),
+                    createSelectElt("pm","pm"),
+                ),
+                createNewElt("label","time-label",null,"To"),
+                createFormElt("input","text","time-to","6:00"),
+                createNewElt("select","period-to",null,
+                    createSelectElt("am","am"),
+                    createSelectElt("pm","pm"),
+                )
+            ),
+            createNewElt("label","event-info",null,"Event Description"),
+            createFormElt("input","text","form-info-new","To be added"),
+            createFormElt("input","submit","save-button","Save"),
+            createFormElt("input","reset","reset-button","Reset")
+        )
     );
     return form;
-}
-function exitElement() { //TODO: soon
-
-}
-function editDisplay() { //TODO: soon
-
-}
-function addNewDisplay() { //TODO: soon
-
 }
 function save() { //TODO: When JSON file is created
 
